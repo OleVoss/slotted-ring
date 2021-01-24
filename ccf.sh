@@ -2,7 +2,7 @@
 
 # setup
 set -e
-lib_path=/home/ole/Repos/slotted-ring/components/avr_lib/src
+lib_path=/home/voss/repos/slotted-ring/components/avr_lib/src
 
 # get filename
 file=$(basename $1 .c)
