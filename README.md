@@ -8,6 +8,9 @@
   - AAA/AA besser in Reihe
   - [Artikel](https://www.microcontrollertips.com/considerations-battery-powered-designs/)
 
+### tools
+- [AVR Emulator](https://github.com/buserror/simavr)
+
 ### wichtig
 - [Atmel avr i2c lcd](http://ww1.microchip.com/downloads/en/AppNotes/doc1981.pdf)
 - I2C Module
