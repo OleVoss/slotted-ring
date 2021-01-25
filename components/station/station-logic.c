@@ -11,12 +11,12 @@ int responseIndex = 5;
 int dataStack[3];
 int dataStackLength = 0;
 bool sendPermission = false;
+
 int stationId = 2;
-int selectedTarget = 3;
 
 int main() {
-    int array[6] = {1,0,0,2,3,0};
-    readConfig(array);
+    testSend();
+    // testRead();
 
 	return 0;
 }
@@ -24,10 +24,12 @@ int main() {
 void readConfig(int config[6]) {
     if (config[occupiedIndex] == 1) {
         sendPermission = false;
-        printf("config is occupied\n");
+        printf("config is occupied");
         if (config[targetIndex] == stationId) {
-            printf("config is targetted to this station\n");
+            printf(" and targetted to this station\n");
             processData(config);
+        } else {
+            printf(" but not targetted to this station\n");
         }
     }
     else {
@@ -56,6 +58,17 @@ void addDataToDataStack(int configData) {
     dataStackLength = dataStackLength + 1;
 }
 
+int takeDataFromDataStack() {
+    int dataToSend = dataStack[dataStackLength - 1];
+    dataStack[dataStackLength - 1] = 0;
+    dataStackLength = dataStackLength - 1;
+    return dataToSend;
+}
+
+int getTargetAddress() {
+    return 3;
+}
+
 void processData(int config[6]){
     printf("start processing\n");
     if (dataStackEmptyOrContainLagerElements(config[dataIndex])) {
@@ -70,20 +83,66 @@ void processData(int config[6]){
 }
 
 void logConfig(int config[6]) {
-    printf("config: ");
-    for(int i = 0; i < 6; i++) {
-        printf("%d, ", config[i]);
-    }
     printf("\n");
+    printf("config: ");
+    printArray(config, 6);
+    printf("\n");
+    logLite();
+}
 
+void logLite() {
     printf("sendPermission: %d\n", sendPermission);
+    printf("dataStackLength: %d\n", dataStackLength);
     
     printf("dataStack: ");
-    for(int i = 0; i < dataStackLength; i++) {
-        printf("%d, ", dataStack[i]);
-    }
-    printf("\n");
+    printArray(dataStack, dataStackLength);
+    printf("\n\n");
+}
 
-    printf("dataStackLength: %d\n", dataStackLength);
+void printArray(int *arrayReference, int length) {
+    for(int i = 0; i < length; i++) {
+        printf("%d, ", arrayReference[i]);
+    }
+}
+
+void onButtonSendEvent() {
+    printf("handling send button press event\n");
+    if (dataStackLength != 0 && sendPermission) {
+        printf("take last item of dataStack and build config\n");
+        int dataToSend = takeDataFromDataStack();
+        int targetToSend = getTargetAddress();
+        int config[6] = { 1, 0, stationId, targetToSend, dataToSend, 3 };
+        sendPermission = false;
+
+        printf("write config to slot\n");
+        logConfig(config);
+    }
+}
+
+void testSend() {
+    //sendPermission = false; dataStackLength = 0; // not writing to slot because dataStackLength == 0 or sendPermission == false
+    //sendPermission = true; dataStackLength = 0; // not writing to slot because dataStackLength == 0 or sendPermission == false
+    //sendPermission = false; dataStackLength = 1; // not writing to slot because dataStackLength == 0 or sendPermission == false
+    sendPermission = true; dataStackLength = 1; // writing to slot because dataStackLength != 0 and sendPermission == true
+
+    logLite();
+    onButtonSendEvent();
+}
+
+void testRead() {
+    //int array[6] = {1,0,0,3,3,0}; // occupied, but not targetted to this station
+
+    int array[6] = {1,0,0,2,3,0}; // occupied and targetted to this station - data accepted, because dataStackLength = 0
+
+    //dataStack[0] = 4;
+    //dataStack[1] = 0;
+    //dataStack[2] = 0;
+    //dataStackLength = 1;
+    //int array[6] = {1,0,0,2,3,0}; // occupied and targetted to this station - data accepted, because data is smaller then dataStackEntry (3 < 4)
+    //int array[6] = {1,0,0,2,5,0}; // occupied and targetted to this station - data rejected, because data is bigger then dataStackEntry (5 > 4)
+
+    logConfig(array);
+    printf("\n");
+    readConfig(array);
 }
 
