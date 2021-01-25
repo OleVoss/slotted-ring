@@ -10,6 +10,9 @@
 
 ### wichtig
 - [Atmel avr i2c lcd](http://ww1.microchip.com/downloads/en/AppNotes/doc1981.pdf)
+- I2C Module
+  - http://www.handsontec.com/dataspecs/module/I2C_1602_LCD.pdf
+  - https://www.orientdisplay.com/pdf/CharFull/AMC1602AI2C-Full.pdf
 
 Slotted Ring Codebase
 ![d](https://www.wallpapertip.com/wmimgs/15-158952_slipknot-vol-3-the-subliminal-verses.png)
