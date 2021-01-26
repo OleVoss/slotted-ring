@@ -14,6 +14,7 @@
 ### wichtig
 - [Add libraries to GCC](https://stackoverflow.com/questions/31455979/how-to-specify-libraries-paths-in-gcc/31456027)
 - [Atmel avr i2c lcd](http://ww1.microchip.com/downloads/en/AppNotes/doc1981.pdf)
+- [I2C in Assembly](http://www.grzesina.de/avr/i2c/i2c.html)
 - I2C Module
   - http://www.handsontec.com/dataspecs/module/I2C_1602_LCD.pdf
   - https://www.orientdisplay.com/pdf/CharFull/AMC1602AI2C-Full.pdf
