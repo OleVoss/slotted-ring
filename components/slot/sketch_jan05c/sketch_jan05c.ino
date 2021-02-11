@@ -1,17 +1,17 @@
 #include <Wire.h>
 
-int ledRed = 6;
-int ledOrange = 7;
-int ledGreen = 8;
+int ledRed = 2;
+int ledBlue = 3;
+int ledGreen = 4;
 
-int ledArray[3] {ledGreen, ledOrange, ledRed};
+int ledArray[3] {ledGreen, ledBlue, ledRed};
 
 #define adress 0x05
 unsigned ledConfig[3];
 
 void setup() {
   pinMode(ledRed, OUTPUT);
-  pinMode(ledOrange, OUTPUT);
+  pinMode(ledBlue, OUTPUT);
   pinMode(ledGreen, OUTPUT);
 
   Serial.begin(9600);
@@ -23,7 +23,13 @@ void setup() {
 }
 
 void loop() {
-  delay(100);
+  if (Wire.available()) {
+    digitalWrite(ledBlue, LOW);
+    digitalWrite(ledRed, HIGH);
+  } else {
+    digitalWrite(ledRed, LOW);
+    digitalWrite(ledBlue, HIGH);
+  }
 }
 
 void receiveData(int byteCount) {

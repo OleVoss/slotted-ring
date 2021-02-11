@@ -65,7 +65,7 @@ void receiveConfig(int byteCount) {
     for (int i = 0; i<byteCount; i++) {
       configArray[i] = Wire.read();
     }
-    Serial.println("...done");
+    
   }
   
   // change config struct
@@ -75,7 +75,11 @@ void receiveConfig(int byteCount) {
   config.ziel = configArray[3];
   config.block = configArray[4];
   config.antwort = configArray[5];
-    
+  Serial.print("=>");
+  for (int x=0; x<6; x++ ) {
+    Serial.print(configArray[x]);
+  };
+  Serial.println("...done");
   // apply config
   applyLEDConfig();
   applyLCDConfig();
