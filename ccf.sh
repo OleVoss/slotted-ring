@@ -2,13 +2,13 @@
 
 # setup
 set -e
-lib_path=/home/voss/repos/slotted-ring/components/avr_lib/src
+lib_path=/home/voss/repos/slotted-ring/components/station
 
 # get filename
 file=$(basename $1 .c)
 
 # compile .c to .elf
-avr-gcc -mmcu=atmega328p -Wall -Os -o $file.elf $file.c #$lib_path/lcdpcf8574/lcdpcf8574.c $lib_path/i2chw/twimaster.c $lib_path/pcf8574/pcf8574.c
+avr-gcc -mmcu=atmega328p -Wall -Os -o $file.elf $file.c $lib_path/i2cmaster.c
 
 # copy elf sections
 avr-objcopy -j .text -j .data -O ihex $file.elf $file.hex
