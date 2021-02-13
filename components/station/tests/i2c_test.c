@@ -1,5 +1,6 @@
 #define  __HAS_DELAY_CYCLES 0
 #define F_CPU 1280000UL
+#define __AVR_ATmega328P__
 #include <avr/io.h>
 #include <util/delay.h>
 #define SLOT 0x05
