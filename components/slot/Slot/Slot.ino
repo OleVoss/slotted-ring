@@ -58,6 +58,21 @@ void loop() {
   delay(500);
 }
 
+void sendConfig() {
+  int config[int] = {
+    config.belegt,
+    config.monitor,
+    config.quelle,
+    config.ziel,
+    config.block,
+    config.antwort
+  };
+
+  for (int i=0; i<sizeof(config); i++) [
+    Wire.wirte(config[i]);
+  ]
+}
+
 void receiveConfig(int byteCount) {
   // read array from i2c-bus
   while (Wire.available()) {
