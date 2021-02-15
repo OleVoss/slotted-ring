@@ -28,6 +28,9 @@ void readConfig(int config[6]) {
         if (config[targetIndex] == stationId) {
             printf(" and targetted to this station\n");
             processData(config);
+        } else if (config[sourceIndex] == stationId) {
+            printf(" and send from this station\n");
+            processAnswer(config);
         } else {
             printf(" but not targetted to this station\n");
         }
@@ -60,9 +63,13 @@ void addDataToDataStack(int configData) {
 
 int takeDataFromDataStack() {
     int dataToSend = dataStack[dataStackLength - 1];
+    dropDataFromDataStack();
+    return dataToSend;
+}
+
+void dropDataFromDataStack() {
     dataStack[dataStackLength - 1] = 0;
     dataStackLength = dataStackLength - 1;
-    return dataToSend;
 }
 
 int getTargetAddress() {
@@ -70,7 +77,7 @@ int getTargetAddress() {
 }
 
 void processData(int config[6]){
-    printf("start processing\n");
+    printf("start processing data\n");
     if (dataStackEmptyOrContainLagerElements(config[dataIndex])) {
         addDataToDataStack(config[dataIndex]);
         config[responseIndex] = 1;
@@ -80,6 +87,17 @@ void processData(int config[6]){
         printf("data rejected\n");
     }
     printf("write config to slot\n");
+}
+
+void processAnswer((int config[6]) {
+    printf("start processing answer\n");
+
+    config[occupiedIndex] == 0;
+
+    if(config[responseIndex] == 1) {
+        dropDataFromDataStack();
+    }
+
 }
 
 void logConfig(int config[6]) {
@@ -109,7 +127,7 @@ void onButtonSendEvent() {
     printf("handling send button press event\n");
     if (dataStackLength != 0 && sendPermission) {
         printf("take last item of dataStack and build config\n");
-        int dataToSend = takeDataFromDataStack();
+        int dataToSend = dataStack[dataStackLength - 1];
         int targetToSend = getTargetAddress();
         int config[6] = { 1, 0, stationId, targetToSend, dataToSend, 3 };
         sendPermission = false;
