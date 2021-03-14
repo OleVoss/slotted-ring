@@ -7,20 +7,27 @@
 
 #define SLA 0x05
 
-int main(void) {
+int main(void)
+{
 
-	DDRB |= (1 << DDB0);
-	_delay_ms(1000);
+    DDRB |= (1 << DDB0);
+    _delay_ms(1000);
+
     send_start();
-
-    start_write(SLA);
-
-    int data[6] = {1, 1, 1, 1, 1, 1};
-    int data_off[6] = {1, 1, 0, 0, 0, 0};
-
-    send_multiple_bytes(data_off);
-
+    start_read(SLA);
+    int data[3];
+    // int data_off[6] = {0, 0, 1, 1, 0, 0};
+    data[0] = read_ack();
+    data[1] = read_ack();
+    data[2] = read_nack();
     send_stop();
 
-	PORTB |= (1 << PB0);
+    send_start();
+    start_write(SLA);
+    send_byte(data[0]);
+    send_byte(data[1]);
+    send_byte(data[2]);
+    send_stop();
+
+    PORTB |= (1 << PB0);
 }

@@ -5,37 +5,64 @@
 #include <avr/io.h>
 #include <util/delay.h>
 
-void send_start() {
-    TWCR = (1 << TWINT)|(1 << TWSTA)|(1 << TWEN);
-    while(!(TWCR & (1 << TWINT)));
+void send_start()
+{
+    TWCR = (1 << TWINT) | (1 << TWSTA) | (1 << TWEN);
+    while (!(TWCR & (1 << TWINT)))
+        ;
 }
 
-void send_byte(int data) {
+void send_byte(int data)
+{
     TWDR = data;
-    TWCR = (1 << TWINT)|(1 << TWEN);
-    while(!(TWCR & (1 << TWINT)));
+    TWCR = (1 << TWINT) | (1 << TWEN);
+    while (!(TWCR & (1 << TWINT)))
+        ;
 }
 
-void send_multiple_bytes(int data[]) {
-    for (int i=0; i<sizeof(data); i++) {
+void send_multiple_bytes(int data[])
+{
+    for (int i = 0; i < sizeof(data); i++)
+    {
         send_byte(data[i]);
     }
 }
 
-void send_stop() {
-	TWCR = (1 << TWINT)|(1 << TWEN)|(1 << TWSTO);
+void send_stop()
+{
+    TWCR = (1 << TWINT) | (1 << TWEN) | (1 << TWSTO);
 }
 
-void start_write(int adress) {
-    int SLA_W = (adress << 1)|0x00;
+void start_write(int adress)
+{
+    int SLA_W = (adress << 1) | 0x00;
     TWDR = SLA_W;
-    TWCR = (1 << TWINT)|(1 << TWEN);
-    while(!(TWCR & (1 << TWINT)));
+    TWCR = (1 << TWINT) | (1 << TWEN);
+    while (!(TWCR & (1 << TWINT)))
+        ;
 }
 
-void start_read(int adress) {
-    int SLA_W = (adress << 1)|0x01;
-    TWDR = SLA_W;
-    TWCR = (1 << TWINT)|(1 << TWEN);
-    while(!(TWCR & (1 << TWINT)));
+void start_read(int adress)
+{
+    int SLA_R = (adress << 1) | 0x01;
+    TWDR = SLA_R;
+    TWCR = (1 << TWINT) | (1 << TWEN);
+    while (!(TWCR & (1 << TWINT)))
+        ;
+}
+
+int read_ack()
+{
+    TWCR = (1 << TWINT) | (1 << TWEN) | (1 << TWEA);
+    while (!(TWCR & (1 << TWINT)))
+        ;
+    return TWDR;
+}
+
+int read_nack()
+{
+    TWCR = (1 << TWINT) | (1 << TWEN);
+    while (!(TWCR & (1 << TWINT)))
+        ;
+    return TWDR;
 }
