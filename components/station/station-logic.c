@@ -24,27 +24,42 @@ int getTargetAddress()
 
 void writeConfig(int config[6])
 {
-    printf("write config to slot\n");
+    send_start();
+    start_write(SLA);
+    send_byte(config[0]);
+    send_byte(config[1]);
+    send_byte(config[2]);
+    send_byte(config[3]);
+    send_byte(config[4]);
+    send_byte(config[5]);
+    send_stop();
 }
 
-void readConfig(int *configReference)
+bool checkI2CConnection()
+{
+    return true;
+}
+
+void readConfig(int config[6])
 {
     send_start();
     start_read(SLA);
-    // int data_off[6] = {0, 0, 1, 1, 0, 0};
-    configReference[0] = read_ack();
-    configReference[1] = read_ack();
-    configReference[2] = read_ack();
-    configReference[3] = read_ack();
-    configReference[4] = read_ack();
-    configReference[5] = read_nack();
+    config[0] = read_ack();
+    config[1] = read_ack();
+    config[2] = read_ack();
+    config[3] = read_ack();
+    config[4] = read_ack();
+    config[5] = read_nack();
     send_stop();
+
 }
 
 void readLoop() 
 {
-    while(true) 
+    bool connection = false;
+    while(!connection) 
     {
+        connection = checkI2CConnection();
         int config[6];
         readConfig(config);
     }
