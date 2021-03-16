@@ -1,4 +1,4 @@
-<mxfile host="app.diagrams.net" modified="2021-03-16T18:29:50.682Z" agent="5.0 (X11)" etag="oBSYAOlAwXf5cqgjGgC4" version="14.4.8" type="github" pages="2">
+<mxfile host="app.diagrams.net" modified="2021-03-16T18:32:30.358Z" agent="5.0 (X11)" etag="05yVy5CJgdHedYpGkjtV" version="14.4.8" type="github" pages="2">
   <diagram id="bFDk07U98qY8neNTBVp-" name="Page-1">
     <mxGraphModel dx="1583" dy="915" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
       <root>
@@ -239,7 +239,7 @@
             <mxPoint as="offset" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="4UdbsYiw1NfuUuC8VVJh-3" value="Slot verfügbar?" style="rhombus;whiteSpace=wrap;html=1;strokeWidth=2;" vertex="1" parent="4UdbsYiw1NfuUuC8VVJh-1">
+        <mxCell id="4UdbsYiw1NfuUuC8VVJh-3" value="Slot verfügbar?" style="rhombus;whiteSpace=wrap;html=1;strokeWidth=2;rounded=1;" vertex="1" parent="4UdbsYiw1NfuUuC8VVJh-1">
           <mxGeometry x="155" y="25" width="80" height="80" as="geometry" />
         </mxCell>
         <mxCell id="4UdbsYiw1NfuUuC8VVJh-12" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="4UdbsYiw1NfuUuC8VVJh-1" source="4UdbsYiw1NfuUuC8VVJh-5" target="4UdbsYiw1NfuUuC8VVJh-11">
