@@ -1,5 +1,7 @@
 #include <stdio.h>
 #include <stdbool.h>
+#include <stdlib.h> 
+#include <time.h> 
 #include "i2cmaster.h"
 
 int occupiedIndex = 0;
@@ -12,6 +14,9 @@ int responseIndex = 5;
 int dataStack[3];
 int dataStackLength = 0;
 bool sendPermission = false;
+
+ bool isConnected = false;
+ bool isAlreadyBeenRead = false;
 
 int stationId = 2;
 
@@ -54,16 +59,6 @@ void readConfig(int config[6])
 
 }
 
-void readLoop() 
-{
-    bool connection = false;
-    while(!connection) 
-    {
-        connection = checkI2CConnection();
-        int config[6];
-        readConfig(config);
-    }
-}
 
 void evaluateConfig(int config[6]);
 void processData(int config[6]);
@@ -80,8 +75,32 @@ void logConfig(int config[6]);
 
 int main()
 {
-    testSend();
+    srand(time(0));
+    // testSend();
     // testRead();
+
+    while(true)
+    {
+        isConnected = checkI2CConnection();
+
+        if(isConnected)
+        {
+            if(!isAlreadyBeenRead)
+            {
+                int config[6];
+                readConfig(config);
+                evaluateConfig(config);
+                isAlreadyBeenRead = true;
+            }
+        }
+        else
+        {
+            isAlreadyBeenRead = false;
+            sendPermission = false;
+        }
+
+        delay(500);
+    }
 
     return 0;
 }
@@ -113,7 +132,7 @@ void evaluateConfig(int config[6])
         // printf("config is idle\n");
     }
 
-    logConfig(config);
+    // logConfig(config);
 }
 
 bool dataStackEmptyOrContainLargerElements(int configData)
@@ -181,7 +200,11 @@ void processAnswer(int config[6])
         dropDataFromDataStack();
     }
 
-    config[occupiedIndex] = 0;
+    if(rand() % 100 >= 75)
+    {
+        config[occupiedIndex] = 0;
+    }
+
     writeConfig(config);
 }
 
