@@ -1,8 +1,9 @@
 #include <stdio.h>
 #include <stdbool.h>
-#include <stdlib.h> 
-#include <time.h> 
+#include <stdlib.h>
+#include <time.h>
 #include "i2cmaster.h"
+#include "utility.c"
 
 int occupiedIndex = 0;
 int monitorIndex = 1;
@@ -15,8 +16,8 @@ int dataStack[3];
 int dataStackLength = 0;
 bool sendPermission = false;
 
- bool isConnected = false;
- bool isAlreadyBeenRead = false;
+bool isConnected = false;
+bool isAlreadyBeenRead = false;
 
 int stationId = 2;
 
@@ -24,41 +25,10 @@ int stationId = 2;
 
 int getTargetAddress()
 {
+    // check lever state -> map to target
+    int state = checkPin(4);
     return 3;
 }
-
-void writeConfig(int config[6])
-{
-    send_start();
-    start_write(SLA);
-    send_byte(config[0]);
-    send_byte(config[1]);
-    send_byte(config[2]);
-    send_byte(config[3]);
-    send_byte(config[4]);
-    send_byte(config[5]);
-    send_stop();
-}
-
-bool checkI2CConnection()
-{
-    return true;
-}
-
-void readConfig(int config[6])
-{
-    send_start();
-    start_read(SLA);
-    config[0] = read_ack();
-    config[1] = read_ack();
-    config[2] = read_ack();
-    config[3] = read_ack();
-    config[4] = read_ack();
-    config[5] = read_nack();
-    send_stop();
-
-}
-
 
 void evaluateConfig(int config[6]);
 void processData(int config[6]);
@@ -79,16 +49,16 @@ int main()
     // testSend();
     // testRead();
 
-    while(true)
+    while (true)
     {
-        isConnected = checkI2CConnection();
+        isConnected = checkI2CConnection(SLA);
 
-        if(isConnected)
+        if (isConnected)
         {
-            if(!isAlreadyBeenRead)
+            if (!isAlreadyBeenRead)
             {
                 int config[6];
-                readConfig(config);
+                readConfig(config, SLA);
                 evaluateConfig(config);
                 isAlreadyBeenRead = true;
             }
@@ -187,8 +157,8 @@ void processData(int config[6])
         config[responseIndex] = 2;
         // printf("data rejected\n");
     }
-    
-    writeConfig(config);
+
+    writeConfig(config, SLA);
 }
 
 void processAnswer(int config[6])
@@ -200,12 +170,12 @@ void processAnswer(int config[6])
         dropDataFromDataStack();
     }
 
-    if(rand() % 100 >= 75)
+    if (rand() % 100 >= 75)
     {
         config[occupiedIndex] = 0;
     }
 
-    writeConfig(config);
+    writeConfig(config, SLA);
 }
 
 void onButtonSendEvent()
@@ -219,7 +189,7 @@ void onButtonSendEvent()
         int config[6] = {1, 0, stationId, targetToSend, dataToSend, 3};
         sendPermission = false;
 
-        writeConfig(config);
+        writeConfig(config, SLA);
     }
 }
 
@@ -241,7 +211,7 @@ void logLite()
     printf("\n\n");
 }
 
-void logConfig(int config[6]) 
+void logConfig(int config[6])
 {
     printf("\n");
     printf("config: ");
