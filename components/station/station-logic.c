@@ -170,7 +170,7 @@ void processAnswer(int config[6])
         dropDataFromDataStack();
     }
 
-    if (rand() % 100 >= 75)
+    if (rand() % 100 <= 75)
     {
         config[occupiedIndex] = 0;
     }
