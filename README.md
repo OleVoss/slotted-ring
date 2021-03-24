@@ -12,6 +12,7 @@
 - [AVR Emulator](https://github.com/buserror/simavr)
 
 ### wichtig
+- https://github.com/johnrickman/LiquidCrystal_I2C/blob/master/LiquidCrystal_I2C.cpp
 - [Add libraries to GCC](https://stackoverflow.com/questions/31455979/how-to-specify-libraries-paths-in-gcc/31456027)
 - [Atmel avr i2c lcd](http://ww1.microchip.com/downloads/en/AppNotes/doc1981.pdf)
 - [I2C in Assembly](http://www.grzesina.de/avr/i2c/i2c.html)
