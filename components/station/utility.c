@@ -1,7 +1,22 @@
+#include <avr/io.h>
+#include <stdio.h>
+#include <util/delay.h>
+
+#include "/home/voss/repos/slotted-ring/components/avr_lib/src/i2chw/i2cmaster.h"
+#include "/home/voss/repos/slotted-ring/components/avr_lib/src/lcdpcf8574/lcdpcf8574.h"
+
 bool checkI2CConnection(int SLA)
 {
-    // check if SLA is available in i2c bus
-    return true;
+    send_start();
+    int result = start_write_sr(SLA);
+
+    return result == 1;
+}
+
+void updateDisplay(int config[6])
+{
+    lcd_clrscr();
+    lcd_puts("not yet implemented");
 }
 
 void writeConfig(int config[6], int SLA)

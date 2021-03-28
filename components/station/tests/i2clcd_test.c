@@ -15,6 +15,17 @@ int main(void)
 	DDRB |= (1 << DDB0);
 	_delay_ms(2000);
 
+	// init lcd
+	lcd_init(LCD_DISP_ON);
+
+	lcd_home();
+
+	lcd_led(0);
+
+	lcd_puts("Nr. 1");
+	lcd_gotoxy(7, 0);
+	lcd_puts("XX");
+	// i2c functioning test
 	send_start();
 	int result = start_write_sr(SLA);
 	send_stop();

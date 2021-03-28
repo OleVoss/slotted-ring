@@ -2,8 +2,11 @@
 #include <stdbool.h>
 #include <stdlib.h>
 #include <time.h>
+#include <util/delay.h>
 #include "i2cmaster.h"
 #include "utility.c"
+#define SLA_SLOT 0x05
+#define SLA_LCD 0x27
 
 int occupiedIndex = 0;
 int monitorIndex = 1;
@@ -20,8 +23,6 @@ bool isConnected = false;
 bool isAlreadyBeenRead = false;
 
 int stationId = 2;
-
-#define SLA 0x05
 
 int getTargetAddress()
 {
@@ -49,27 +50,34 @@ int main()
     // testSend();
     // testRead();
 
-    while (true)
+    lcd_init(LCD_DISP_ON);
+    lcd_led(0); //set led
+    lcd_home();
+
+    int config[6];
+
+    while (1)
     {
-        isConnected = checkI2CConnection(SLA);
+        bool isConnected = checkI2CConnection(SLA_LCD);
 
         if (isConnected)
         {
-            if (!isAlreadyBeenRead)
-            {
-                int config[6];
-                readConfig(config, SLA);
-                evaluateConfig(config);
-                isAlreadyBeenRead = true;
-            }
-        }
-        else
-        {
-            isAlreadyBeenRead = false;
-            sendPermission = false;
+            //     if (!isAlreadyBeenRead)
+            //     {
+            //         readConfig(config, SLA_SLOT);
+            //         evaluateConfig(config);
+            //         isAlreadyBeenRead = true;
+            //     }
+            // }
+            // else
+            // {
+            //     isAlreadyBeenRead = false;
+            //     sendPermission = false;
         }
 
-        delay(500);
+        updateDisplay(config);
+
+        _delay_ms(5000);
     }
 
     return 0;
@@ -158,7 +166,7 @@ void processData(int config[6])
         // printf("data rejected\n");
     }
 
-    writeConfig(config, SLA);
+    writeConfig(config, SLA_SLOT);
 }
 
 void processAnswer(int config[6])
@@ -175,7 +183,7 @@ void processAnswer(int config[6])
         config[occupiedIndex] = 0;
     }
 
-    writeConfig(config, SLA);
+    writeConfig(config, SLA_SLOT);
 }
 
 void onButtonSendEvent()
@@ -189,7 +197,7 @@ void onButtonSendEvent()
         int config[6] = {1, 0, stationId, targetToSend, dataToSend, 3};
         sendPermission = false;
 
-        writeConfig(config, SLA);
+        writeConfig(config, SLA_SLOT);
     }
 }
 
