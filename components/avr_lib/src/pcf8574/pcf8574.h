@@ -7,23 +7,21 @@ Released under GPLv3.
 Please refer to LICENSE file for licensing information.
 */
 
-
 #ifndef PCF8574_H_
 #define PCF8574_H_
 
-#define PCF8574_ADDRBASE (0x20) //device base address
+#define PCF8574_ADDRBASE (0x27) //device base address
 
 #define PCF8574_I2CINIT 1 //init i2c
 
 #define PCF8574_MAXDEVICES 1 //max devices, depends on address (3 bit)
-#define PCF8574_MAXPINS 8 //max pin per device
+#define PCF8574_MAXPINS 8    //max pin per device
 
 //settings
 #define PCF8574_I2CFLEURYPATH "../i2chw/i2cmaster.h" //define the path to i2c fleury lib
 
 //pin status
 volatile uint8_t pcf8574_pinstatus[PCF8574_MAXDEVICES];
-
 
 //functions
 void pcf8574_init();

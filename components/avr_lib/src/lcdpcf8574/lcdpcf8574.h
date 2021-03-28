@@ -20,7 +20,7 @@ References:
 
 #define LCD_PCF8574_INIT 1 //init pcf8574
 
-#define LCD_PCF8574_DEVICEID 0x27 //device id, addr = pcf8574 base addr + LCD_PCF8574_DEVICEID
+#define LCD_PCF8574_DEVICEID 0x00 //device id, addr = pcf8574 base addr + LCD_PCF8574_DEVICEID
 
 /** 
  *  @name  Definitions for Display Size 
