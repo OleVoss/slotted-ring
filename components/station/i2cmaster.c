@@ -1,6 +1,5 @@
 #include "i2cmaster.h"
 #define __HAS_DELAY_CIRCLES 0
-#define F_CPU 1280000UL
 #define __AVR_ATmega328P__
 #include <avr/io.h>
 #include <util/delay.h>
@@ -40,6 +39,25 @@ void start_write(int adress)
     TWCR = (1 << TWINT) | (1 << TWEN);
     while (!(TWCR & (1 << TWINT)))
         ;
+}
+
+int start_write_sr(int adress)
+{
+    int SLA_W = (adress << 1) | 0x00;
+    TWDR = SLA_W;
+    TWCR = (1 << TWINT) | (1 << TWEN);
+    while (!(TWCR & (1 << TWINT)))
+        ;
+
+    if ((TWSR & 0xf8) == 0x18)
+    {
+        return 1;
+    }
+    else if ((TWSR & 0xf8) == 0x20)
+    {
+        return 0;
+    }
+    return 2;
 }
 
 void start_read(int adress)
