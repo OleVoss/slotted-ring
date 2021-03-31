@@ -15,7 +15,7 @@ int main(void)
     _delay_ms(1000);
 
     send_start();
-    start_write(LCD_A);
+    int result = start_write_sr(SLA);
     send_byte(200);
     send_stop();
 
@@ -35,5 +35,9 @@ int main(void)
     // send_byte(data[2]);
     // send_stop();
 
-    PORTB |= (1 << PB0);
+    if (result == 0)
+    {
+
+        PORTB |= (1 << PB0);
+    }
 }
