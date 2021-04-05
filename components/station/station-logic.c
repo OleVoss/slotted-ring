@@ -46,24 +46,47 @@ void logConfig(int config[6]);
 
 int main()
 {
-    int config[6] = {
-        1,
-        1,
-        1,
-        1,
-        1,
-        1,
-    };
-    // testSend();
-    // testRead();
-
     // lcd_init(LCD_DISP_ON);
     // lcd_led(0); //set led
     // lcd_home();
 
     // updateDisplay(config);
 
-    writeConfig(config, SLA_SLOT);
+    // int config[6] = {
+    //     1,
+    //     1,
+    //     1,
+    //     1,
+    //     1,
+    //     1,
+    // };
+
+    // writeConfig(config, SLA_SLOT);
+
+    srand(time(0));
+
+    while (true)
+    {
+        isConnected = checkI2CConnection(SLA_SLOT);
+
+        if (isConnected)
+        {
+            if (!isAlreadyBeenRead)
+            {
+                int config[6];
+                readConfig(config, SLA_SLOT);
+                evaluateConfig(config);
+                isAlreadyBeenRead = true;
+            }
+        }
+        else
+        {
+            isAlreadyBeenRead = false;
+            sendPermission = false;
+        }
+
+        delay(500);
+    }
 
     return 0;
 }
